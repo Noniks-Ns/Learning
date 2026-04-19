@@ -31,7 +31,7 @@ void safeAddWithAtomic() {
 }
 
 int main() {
-    std::cout << "=== Race Condition Example ===n";
+    std::cout << "=== Race Condition Example ===\n";
     n = 0;
 
     std::thread t1(unsafeAdd);
@@ -39,28 +39,28 @@ int main() {
     t1.join();
     t2.join();
 
-    std::cout << "Unsafe result (n): " << n << " (probably not 2000)nn";
-
-    // === With mutex ===
-    std::cout << "=== Safe with Mutex ===n";
-    n = 0; 
+    std::cout << "Unsafe result (n): " << n << " (probably not 2000)\n\n";
     
-    std::thread t3(safeAddWithMutex); 
+    // === With mutex ===
+    std::cout << "=== Safe with Mutex ===\n";
+    n = 0;
+
+    std::thread t3(safeAddWithMutex);
     std::thread t4(safeAddWithMutex);
     t3.join();
-    t4.join(); 
-    
-    std::cout << "Safe with mutex (n): " << n << " (should be 2000)nn"; 
-    
-    // === With atomic variable === 
-    std::cout << "=== Safe with Atomic ===n";
-    atomic_n = 0; 
-    
-    std::thread t5(safeAddWithAtomic); 
-    std::thread t6(safeAddWithAtomic); 
-    t5.join(); 
-    t6.join(); 
+    t4.join();
 
-    std::cout << "Safe with atomic (atomic_n): " << atomic_n << " (should be 2000)n"; 
-    return 0; 
+    std::cout << "Safe with mutex (n): " << n << " (should be 2000)\n\n";
+
+    // === With atomic variable === 
+    std::cout << "=== Safe with Atomic ===\n";
+    atomic_n = 0;
+
+    std::thread t5(safeAddWithAtomic);
+    std::thread t6(safeAddWithAtomic);
+    t5.join();
+    t6.join();
+
+    std::cout << "Safe with atomic (atomic_n): " << atomic_n << " (should be 2000)\n";
+    return 0;
 }
