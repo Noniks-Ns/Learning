@@ -7,25 +7,25 @@
 // Automatically frees memory when going out of scope.
 
 void uniquePtrDemo() {
-    std::cout << "n--- unique_ptr ---n";
+    std::cout << "--- unique_ptr ---\n";
 
     // Create a unique_ptr using make_unique
     auto p = std::make_unique<int>(10);
-    std::cout << "unique_ptr value: " << *p << 'n';
-    std::cout << "Address: " << p.get() << 'n';
+    std::cout << "unique_ptr value: " << *p << '\n';
+    std::cout << "Address: " << p.get() << '\n';
 
     // Pass by reference (ownership is NOT transferred)
     auto printPtr = [](const std::unique_ptr<int>& ptr) {
-        std::cout << "Value via const ref: " << *ptr << 'n';
-    };
+        std::cout << "Value via const ref: " << *ptr << '\n';
+        };
     printPtr(p); // p still owns the object
 
     // Transfer ownership (move) — p becomes empty
     auto p2 = std::move(p);
     if (p == nullptr) {
-        std::cout << "p is now null after moven";
+        std::cout << "p is now null after move\n";
     }
-    std::cout << "p2 value: " << *p2 << 'n';
+    std::cout << "p2 value: " << *p2 << '\n';
 }
 
 // ---------------- SHARED_PTR ----------------
@@ -34,24 +34,24 @@ void uniquePtrDemo() {
 // Used when multiple owners need to share a single object.
 
 void sharedPtrDemo() {
-    std::cout << "n--- shared_ptr ---n";
+    std::cout << "\n--- shared_ptr ---\n";
 
     // Create shared_ptr
     auto p1 = std::make_shared<int>(5);
-    std::cout << "Use count: " << p1.use_count() << 'n'; // 1
+    std::cout << "Use count: " << p1.use_count() << '\n'; // 1
 
     // Copy — ownership is shared
     auto p2 = p1;
     auto p3 = p1;
-    std::cout << "Use count after 3 copies: " << p1.use_count() << 'n'; // 3
+    std::cout << "Use count after 3 copies: " << p1.use_count() << '\n'; // 3
 
     // Delete one copy
     p3.reset();
-    std::cout << "Use count after p3.reset(): " << p1.use_count() << 'n'; // 2
+    std::cout << "Use count after p3.reset(): " << p1.use_count() << '\n'; // 2
 
     // Delete another one
     p2.reset();
-    std::cout << "Use count after p2.reset(): " << p1.use_count() << 'n'; // 1
+    std::cout << "Use count after p2.reset(): " << p1.use_count() << '\n'; // 1
 
     // p1 goes out of scope → object is deleted
 }
@@ -68,16 +68,16 @@ public:
     std::weak_ptr<Node> prev; // Does not own the previous one — avoids cycle
 
     Node(int v) : data(v) {
-        std::cout << "Node created: " << data << 'n';
+        std::cout << "Node created: " << data << '\n';
     }
 
     ~Node() {
-        std::cout << "Node destroyed: " << data << 'n';
+        std::cout << "Node destroyed: " << data << '\n';
     }
 };
 
 void weakPtrDemo() {
-    std::cout << "n--- weak_ptr ---n";
+    std::cout << "\n--- weak_ptr ---\n";
 
     auto n1 = std::make_shared<Node>(10);
     auto n2 = std::make_shared<Node>(20);
@@ -89,20 +89,20 @@ void weakPtrDemo() {
 
     // Check if the object is alive
     if (auto locked = w.lock()) {
-        std::cout << "Weak ptr is valid. Data: " << locked->data << 'n';
+        std::cout << "Weak ptr is valid. Data: " << locked->data << '\n';
     }
     else {
-        std::cout << "Object expiredn";
+        std::cout << "Object expired\n";
     }
 
     n1.reset(); // deleting n1
-    std::cout << "n1 destroyed. Checking weak_ptr...n";
+    std::cout << "n1 destroyed. Checking weak_ptr...\n";
 
     if (auto locked = w.lock()) {
-        std::cout << "Still validn";
+        std::cout << "Still valid\n";
     }
     else {
-        std::cout << "Expired weak_ptr — object is gonen";
+        std::cout << "Expired weak_ptr — object is gone\n";
     }
 }
 
